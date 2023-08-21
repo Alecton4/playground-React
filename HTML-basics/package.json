@@ -1,0 +1,14 @@
+{
+  "name": "html-basics",
+  "version": "1.0.0",
+  "description": "Hello world!",
+  "main": "hello-script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Alyx",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^8.47.0"
+  }
+}

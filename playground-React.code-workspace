@@ -1,0 +1,66 @@
+{
+	"folders": [
+		{
+			"name": "playground-React",
+			"path": "."
+		},
+		{
+			"name": "HTML-basics",
+			"path": "HTML-basics"
+		},
+		{
+			"name": "JS-number-guessing-game",
+			"path": "JS-number-guessing-game"
+		},
+		{
+			"name": "JS-assessment-silly-story-generator",
+			"path": "JS-assessment-silly-story-generator"
+		},
+		{
+			"name": "React-quick-start",
+			"path": "React-quick-start"
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"[css]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2
+		},
+		"[html]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2
+		},
+		"[javascript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2,
+		},
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2
+		},
+		// "emmet.triggerExpansionOnTab": true,
+		"emmet.includeLanguages": {
+			"javascript": "javascriptreact",
+			"typescript": "typescriptreact",
+		},
+		// JS
+		"javascript.inlayHints.enumMemberValues.enabled": true,
+		"javascript.inlayHints.functionLikeReturnTypes.enabled": true,
+		"javascript.inlayHints.parameterNames.enabled": "all",
+		"javascript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+		"javascript.inlayHints.parameterTypes.enabled": true,
+		"javascript.inlayHints.propertyDeclarationTypes.enabled": true,
+		"javascript.inlayHints.variableTypes.enabled": true,
+		"javascript.inlayHints.variableTypes.suppressWhenTypeMatchesName": false,
+		// TS
+		"typescript.inlayHints.enumMemberValues.enabled": true,
+		"typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+		"typescript.inlayHints.parameterNames.enabled": "all",
+		"typescript.inlayHints.parameterNames.suppressWhenArgumentMatchesName": true,
+		"typescript.inlayHints.parameterTypes.enabled": true,
+		"typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+		"typescript.inlayHints.variableTypes.enabled": true,
+		"typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": false,
+	}
+}
