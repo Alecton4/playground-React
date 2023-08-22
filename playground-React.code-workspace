@@ -5,19 +5,12 @@
 			"path": "."
 		},
 		{
-			"name": "HTML-basics",
-			"path": "HTML-basics"
+			"path": "MDN-HTML-guide"
 		},
 		{
-			"name": "JS-number-guessing-game",
-			"path": "JS-number-guessing-game"
+			"path": "MDN-JS-guide"
 		},
 		{
-			"name": "JS-assessment-silly-story-generator",
-			"path": "JS-assessment-silly-story-generator"
-		},
-		{
-			"name": "React-quick-start",
 			"path": "React-quick-start"
 		}
 	],
