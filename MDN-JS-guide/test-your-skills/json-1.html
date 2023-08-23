@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSON: Task 1</title>
+    <style>
+      p {
+        color: purple;
+        margin: 0.5em 0;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+    <!-- <link rel="stylesheet" href="../styles.css" /> -->
+    <style>
+      /* Some default styling for cookbook examples */
+      /*
+      rgb(53,43,34)
+      rgb(75,70,74)
+      rgb(95,97,110)
+      rgb(137,151,188)
+      rgb(160,178,226)
+      */
+      body {
+        background-color: #fff;
+        color: #333;
+        font: 1em / 1.4 Helvetica Neue, Helvetica, Arial, sans-serif;
+        padding: 0;
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 2rem;
+        margin: 0;
+      }
+
+      h2 {
+        font-size: 1.6rem;
+        margin: 0;
+      }
+
+      p {
+        margin: 0.5em 0;
+      }
+
+      /* styles for the editor */
+
+      .playable {
+        font-family: monospace;
+        display: block;
+        margin-bottom: 10px;
+        background-color: #f4f7f8;
+        border: none;
+        border-left: 6px solid #558abb;
+        color: #4d4e53;
+        width: 90%;
+        max-width: 700px;
+        padding: 10px 10px 0px;
+        font-size: 90%;
+      }
+
+      .playable-css {
+        height: 80px;
+      }
+
+      .playable-js {
+        height: 160px;
+      }
+
+      .playable-buttons {
+        text-align: right;
+        width: 90%;
+        max-width: 700px;
+        padding: 5px 10px 5px 26px;
+        font-size: 100%;
+      }
+
+      .preview {
+        width: 90%;
+        max-width: 700px;
+        border: 1px solid #4d4e53;
+        border-radius: 2px;
+        padding: 10px 14px 10px 10px;
+        margin-bottom: 10px;
+      }
+
+      .preview input {
+        display: block;
+        margin: 5px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <section class="preview"></section>
+  </body>
+
+  <script>
+    const section = document.querySelector("section");
+
+    let para1 = document.createElement("p");
+    let para2 = document.createElement("p");
+    let motherInfo = "The mother cats are called ";
+    let kittenInfo;
+    const requestURL =
+      "https://mdn.github.io/learning-area/javascript/oojs/tasks/json/sample.json";
+
+    fetch(requestURL)
+      .then((response) => response.text())
+      .then((text) => displayCatInfo(text));
+
+    function displayCatInfo(catString) {
+      // Add your code here
+      cats = JSON.parse(catString);
+      const motherInfoRaw = cats.map((motherCat) => motherCat.name).join(", ");
+      const lastCommaIdx = motherInfoRaw.lastIndexOf(",");
+      motherInfo =
+        motherInfo +
+        motherInfoRaw.slice(0, lastCommaIdx) +
+        ", and" +
+        motherInfoRaw.slice(lastCommaIdx + 1) +
+        ".";
+
+      let numFKitten = 0;
+      let numMKitten = 0;
+      for (const mother of cats) {
+        for (const kitten of mother.kittens) {
+          if (kitten.gender === "f") {
+            numFKitten += 1;
+          } else if (kitten.gender === "m") {
+            numMKitten += 1;
+          } else {
+            alert("Something's wrong with this kitten?");
+          }
+        }
+      }
+
+      kittenInfo = `Totally number of kittens: ${numFKitten + numMKitten}.
+      There are ${numFKitten} female kittens and ${numMKitten} male kittens.`;
+
+      // Don't edit the code below here!
+
+      para1.textContent = motherInfo;
+      para2.textContent = kittenInfo;
+    }
+
+    section.appendChild(para1);
+    section.appendChild(para2);
+  </script>
+</html>
