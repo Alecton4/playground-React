@@ -28,7 +28,15 @@
 			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.tabSize": 2,
 		},
+		"[javascriptreact]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2,
+		},
 		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode",
+			"editor.tabSize": 2
+		},
+		"[typescriptreact]": {
 			"editor.defaultFormatter": "esbenp.prettier-vscode",
 			"editor.tabSize": 2
 		},
@@ -55,5 +63,12 @@
 		"typescript.inlayHints.propertyDeclarationTypes.enabled": true,
 		"typescript.inlayHints.variableTypes.enabled": true,
 		"typescript.inlayHints.variableTypes.suppressWhenTypeMatchesName": false,
+		// misc
+		"colorize.languages": [
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact"
+		]
 	}
 }
