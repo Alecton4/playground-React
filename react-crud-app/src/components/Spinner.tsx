@@ -36,3 +36,5 @@ const Spinner: React.FC<SpinnerProps> = ({
     </svg>
   );
 };
+
+export default Spinner;
