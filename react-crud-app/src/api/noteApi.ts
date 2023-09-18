@@ -1,6 +1,6 @@
 import axios from "axios";
 import { CreateNoteInput } from "../components/notes/create.note";
-import { UpdateteNoteInput as UpdateNoteInput } from "../components/notes/update.note";
+import { UpdateNoteInput } from "../components/notes/update.note";
 import { INote, INoteResponse, INotesResponse } from "./types";
 
 const BASE_URL = "http://localhost:8000/api/";
