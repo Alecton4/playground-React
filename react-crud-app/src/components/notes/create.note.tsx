@@ -62,6 +62,7 @@ const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
   const onSubmitHandler: SubmitHandler<CreateNoteInput> = async (data) => {
     createNote(data);
   };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">

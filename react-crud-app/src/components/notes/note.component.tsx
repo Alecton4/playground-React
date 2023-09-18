@@ -17,7 +17,6 @@ type NoteItemProps = {
 const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const [openNoteModal, setOpenNoteModal] = React.useState(false);
-
   React.useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
@@ -33,7 +32,6 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [note.id]);
-
   const queryClient = ReactQuery.useQueryClient();
   const { mutate: deleteNote } = ReactQuery.useMutation({
     mutationFn: (noteId: string) => deleteOne(noteId),
@@ -61,12 +59,12 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       NProgress.done();
     },
   });
-
   const onDeleteHandler = (noteId: string) => {
     if (window.confirm("Are you sure")) {
       deleteNote(noteId);
     }
   };
+
   return (
     <>
       <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-md flex flex-col justify-between overflow-hidden">

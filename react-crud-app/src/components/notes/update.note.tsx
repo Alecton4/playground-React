@@ -64,6 +64,7 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
   const onSubmitHandler: SubmitHandler<UpdateNoteInput> = async (data) => {
     updateOne(note.id, data);
   };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-4">
