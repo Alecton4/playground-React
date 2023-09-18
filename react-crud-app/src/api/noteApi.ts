@@ -17,7 +17,7 @@ export const createOne = async (note: CreateNoteInput) => {
 };
 
 export const readAll = async (page = 1, limit = 10) => {
-  const response = await noteApi.get<INoteResponse>(
+  const response = await noteApi.get<INotesResponse>(
     `notes/?page=${page}&limit=${limit}`
   );
   return response.data;
