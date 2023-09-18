@@ -1,8 +1,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import ReactQuery from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import NProgress from "nprogress";
 import React from "react";
-import ReactHookForm, { SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import Zod from "zod";
@@ -22,7 +22,7 @@ const createNoteSchema = Zod.object({
 export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
 
 const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
-  const methods = ReactHookForm.useForm<CreateNoteInput>({
+  const methods = useForm<CreateNoteInput>({
     resolver: zodResolver(createNoteSchema),
   });
   const {
@@ -30,8 +30,8 @@ const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const queryClient = ReactQuery.useQueryClient();
-  const { mutate: createNote } = ReactQuery.useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: createNote } = useMutation({
     mutationFn: (note: CreateNoteInput) => createOne(note),
     onMutate() {
       NProgress.start();

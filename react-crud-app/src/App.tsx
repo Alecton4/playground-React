@@ -1,4 +1,8 @@
-import ReactQuery from "@tanstack/react-query";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import NProgress from "nprogress";
 import { useEffect, useState } from "react";
@@ -16,7 +20,7 @@ function AppContent() {
     data: notes,
     isLoading,
     isFetching,
-  } = ReactQuery.useQuery({
+  } = useQuery({
     queryKey: ["getNotes"],
     queryFn: () => readAll(),
     staleTime: 5 * 1000,
@@ -79,15 +83,15 @@ function AppContent() {
 }
 
 function App() {
-  const [queryClient] = useState(() => new ReactQuery.QueryClient());
+  const [queryClient] = useState(() => new QueryClient());
 
   return (
     <>
-      <ReactQuery.QueryClientProvider client={queryClient}>
+      <QueryClientProvider client={queryClient}>
         <AppContent />
         <ToastContainer />
         <ReactQueryDevtools initialIsOpen={false} />
-      </ReactQuery.QueryClientProvider>
+      </QueryClientProvider>
     </>
   );
 }

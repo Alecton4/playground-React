@@ -1,4 +1,4 @@
-import ReactQuery from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { format, parseISO } from "date-fns";
 import NProgress from "nprogress";
 import React from "react";
@@ -32,8 +32,8 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [note.id]);
-  const queryClient = ReactQuery.useQueryClient();
-  const { mutate: deleteNote } = ReactQuery.useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: deleteNote } = useMutation({
     mutationFn: (noteId: string) => deleteOne(noteId),
     onMutate() {
       NProgress.start();

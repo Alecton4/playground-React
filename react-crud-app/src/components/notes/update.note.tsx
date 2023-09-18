@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import ReactQuery from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import ReactHookForm, { SubmitHandler } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
 import Zod from "zod";
@@ -23,7 +23,7 @@ const updateNoteSchema = Zod.object({
 export type UpdateNoteInput = Zod.TypeOf<typeof updateNoteSchema>;
 
 const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
-  const methods = ReactHookForm.useForm<UpdateNoteInput>({
+  const methods = useForm<UpdateNoteInput>({
     resolver: zodResolver(updateNoteSchema),
   });
   const {
@@ -36,8 +36,8 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
       methods.reset(note);
     }
   }, []);
-  const queryClient = ReactQuery.useQueryClient();
-  const { mutate: updateNote } = ReactQuery.useMutation({
+  const queryClient = useQueryClient();
+  const { mutate: updateNote } = useMutation({
     mutationFn: ({ noteId, note }: { noteId: string; note: UpdateNoteInput }) =>
       updateOne(noteId, note),
     onSuccess(data) {
