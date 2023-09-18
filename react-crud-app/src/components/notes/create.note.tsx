@@ -1,27 +1,28 @@
-import React from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingButton } from "../LoadingButton";
-import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createOne } from "../../api/noteApi";
+import ReactQuery from "@tanstack/react-query";
 import NProgress from "nprogress";
+import React from "react";
+import ReactHookForm, { SubmitHandler } from "react-hook-form";
+import { toast } from "react-toastify";
+import { twMerge } from "tailwind-merge";
+import Zod from "zod";
+
+import { createOne } from "../../api/noteApi";
+import { LoadingButton } from "../LoadingButton";
 
 type ICreateNoteProps = {
   setOpenNoteModal: (open: boolean) => void;
 };
 
-const createNoteSchema = object({
-  title: string().min(1, "Title is required"),
-  content: string().min(1, "Content is required"),
+const createNoteSchema = Zod.object({
+  title: Zod.string().min(1, "Title is required"),
+  content: Zod.string().min(1, "Content is required"),
 });
 
-export type CreateNoteInput = TypeOf<typeof createNoteSchema>;
+export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
 
 const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
-  const methods = useForm<CreateNoteInput>({
+  const methods = ReactHookForm.useForm<CreateNoteInput>({
     resolver: zodResolver(createNoteSchema),
   });
   const {
@@ -29,8 +30,8 @@ const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  const queryClient = useQueryClient();
-  const { mutate: createNote } = useMutation({
+  const queryClient = ReactQuery.useQueryClient();
+  const { mutate: createNote } = ReactQuery.useMutation({
     mutationFn: (note: CreateNoteInput) => createOne(note),
     onMutate() {
       NProgress.start();

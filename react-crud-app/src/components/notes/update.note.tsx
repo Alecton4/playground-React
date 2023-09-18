@@ -1,28 +1,29 @@
-import React, { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingButton } from "../LoadingButton";
+import ReactQuery from "@tanstack/react-query";
+import React from "react";
+import ReactHookForm, { SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { INote } from "../../api/types";
+import { twMerge } from "tailwind-merge";
+import Zod from "zod";
+
 import { updateOne } from "../../api/noteApi";
+import { INote } from "../../api/types";
+import { LoadingButton } from "../LoadingButton";
 
 type IUpdateNoteProps = {
   note: INote;
   setOpenNoteModal: (open: boolean) => void;
 };
 
-const updateNoteSchema = object({
-  title: string().min(1, "Title is required"),
-  content: string().min(1, "Content is required"),
+const updateNoteSchema = Zod.object({
+  title: Zod.string().min(1, "Title is required"),
+  content: Zod.string().min(1, "Content is required"),
 });
 
-export type UpdateNoteInput = TypeOf<typeof updateNoteSchema>;
+export type UpdateNoteInput = Zod.TypeOf<typeof updateNoteSchema>;
 
 const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
-  const methods = useForm<UpdateNoteInput>({
+  const methods = ReactHookForm.useForm<UpdateNoteInput>({
     resolver: zodResolver(updateNoteSchema),
   });
   const {
@@ -30,13 +31,13 @@ const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
     handleSubmit,
     formState: { errors },
   } = methods;
-  useEffect(() => {
+  React.useEffect(() => {
     if (note) {
       methods.reset(note);
     }
   }, []);
-  const queryClient = useQueryClient();
-  const { mutate: updateNote } = useMutation({
+  const queryClient = ReactQuery.useQueryClient();
+  const { mutate: updateNote } = ReactQuery.useMutation({
     mutationFn: ({ noteId, note }: { noteId: string; note: UpdateNoteInput }) =>
       updateOne(noteId, note),
     onSuccess(data) {
