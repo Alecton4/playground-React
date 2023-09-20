@@ -1,13 +1,13 @@
 import ReactDom from "react-dom";
 import React from "react";
 
-type INoteModal = {
+type NoteModal = {
   openNoteModal: boolean;
   setOpenNoteModal: (open: boolean) => void;
   children: React.ReactNode;
 };
 
-const NoteModal: React.FC<INoteModal> = ({
+const NoteModal: React.FC<NoteModal> = ({
   openNoteModal,
   setOpenNoteModal,
   children,

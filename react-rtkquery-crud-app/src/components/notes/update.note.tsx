@@ -10,7 +10,7 @@ import { useUpdateOneNoteMutation } from "../../redux/noteAPI";
 import { Note } from "../../redux/types";
 import { LoadingButton } from "../LoadingButton";
 
-type IUpdateNoteProps = {
+type UpdateNoteProps = {
   note: Note;
   setOpenNoteModal: (open: boolean) => void;
 };
@@ -22,7 +22,7 @@ const updateNoteSchema = Zod.object({
 
 export type UpdateNoteInput = Zod.TypeOf<typeof updateNoteSchema>;
 
-const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
+const UpdateNote: React.FC<UpdateNoteProps> = ({ note, setOpenNoteModal }) => {
   const [updateNote, { isLoading, isError, error, isSuccess }] =
     useUpdateOneNoteMutation();
 

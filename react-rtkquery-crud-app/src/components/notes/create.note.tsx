@@ -9,7 +9,7 @@ import Zod from "zod";
 import { useCreateOneNoteMutation } from "../../redux/noteAPI";
 import { LoadingButton } from "../LoadingButton";
 
-type ICreateNoteProps = {
+type CreateNoteProps = {
   setOpenNoteModal: (open: boolean) => void;
 };
 
@@ -20,7 +20,7 @@ const createNoteSchema = Zod.object({
 
 export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
 
-const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
+const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
   const [createNote, { isLoading, isError, error, isSuccess }] =
     useCreateOneNoteMutation();
 
