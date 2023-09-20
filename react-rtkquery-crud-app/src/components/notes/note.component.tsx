@@ -1,26 +1,25 @@
+import { FC, useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
-import NProgress from "nprogress";
-import React from "react";
-import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-
-import { useDeleteOneNoteMutation } from "../../redux/noteAPI";
-import { Note } from "../../redux/types";
 import NoteModal from "../note.modal";
 import UpdateNote from "./update.note";
+import { toast } from "react-toastify";
+import NProgress from "nprogress";
+import { INote } from "../../redux/types";
+import { useDeleteNoteMutation } from "../../redux/noteAPI";
 
 type NoteItemProps = {
-  note: Note;
+  note: INote;
 };
 
-const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
-  const [openSettings, setOpenSettings] = React.useState(false);
-  const [openNoteModal, setOpenNoteModal] = React.useState(false);
+const NoteItem: FC<NoteItemProps> = ({ note }) => {
+  const [openSettings, setOpenSettings] = useState(false);
+  const [openNoteModal, setOpenNoteModal] = useState(false);
 
-  const [deleteOneNote, { isLoading, isError, error, isSuccess }] =
-    useDeleteOneNoteMutation();
+  const [deleteNote, { isLoading, isError, error, isSuccess }] =
+    useDeleteNoteMutation();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSuccess) {
       setOpenNoteModal(false);
       toast.warning("Note deleted successfully");
@@ -37,14 +36,13 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       });
       NProgress.done();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const dropdown = document.getElementById(
-        `settings-dropdown-${note.noteId}`
-      );
+      const dropdown = document.getElementById(`settings-dropdown-${note.id}`);
 
       if (dropdown && !dropdown.contains(target)) {
         setOpenSettings(false);
@@ -56,14 +54,13 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [note.noteId]);
+  }, [note.id]);
 
   const onDeleteHandler = (noteId: string) => {
     if (window.confirm("Are you sure")) {
-      deleteOneNote(noteId);
+      deleteNote(noteId);
     }
   };
-
   return (
     <>
       <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-md flex flex-col justify-between overflow-hidden">
@@ -90,7 +87,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
             <i className="bx bx-dots-horizontal-rounded"></i>
           </div>
           <div
-            id={`settings-dropdown-${note.noteId}`}
+            id={`settings-dropdown-${note.id}`}
             className={twMerge(
               `absolute right-0 bottom-3 z-10 w-28 text-base list-none bg-white rounded divide-y divide-gray-100 shadow`,
               `${openSettings ? "block" : "hidden"}`
@@ -109,7 +106,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
               <li
                 onClick={() => {
                   setOpenSettings(false);
-                  onDeleteHandler(note.noteId);
+                  onDeleteHandler(note.id);
                 }}
                 className="py-2 px-4 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
               >

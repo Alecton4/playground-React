@@ -1,90 +1,89 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IMutateNote, INote, INoteResponse } from "./types";
 import NProgress from "nprogress";
 
-import { Note, MutateNote, OneNoteResponse } from "./types";
-
-const BASE_URL = "http://localhost:8000/api/";
+const BASEURL = "http://localhost:8000/api/notes";
 
 export const noteAPI = createApi({
   reducerPath: "noteAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASEURL }),
   tagTypes: ["Notes"],
   endpoints: (builder) => ({
-    createOneNote: builder.mutation<OneNoteResponse, MutateNote>({
+    createNote: builder.mutation<INoteResponse, IMutateNote>({
       query(note) {
         return {
-          url: "notes",
+          url: "/",
           method: "POST",
           credentials: "include",
           body: note,
         };
       },
       invalidatesTags: [{ type: "Notes", id: "LIST" }],
-      transformResponse: (result: { note: OneNoteResponse }) => result.note,
+      transformResponse: (result: { note: INoteResponse }) => result.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
-    updateOneNote: builder.mutation<
-      OneNoteResponse,
-      { noteId: string; note: MutateNote }
+    updateNote: builder.mutation<
+      INoteResponse,
+      { id: string; note: IMutateNote }
     >({
-      query({ noteId: id, note }) {
+      query({ id, note }) {
         return {
-          url: `notes/${id}`,
+          url: `/${id}`,
           method: "PATCH",
           credentials: "include",
           body: note,
         };
       },
-      invalidatesTags: (result, error, { noteId: id }) =>
+      invalidatesTags: (result, error, { id }) =>
         result
           ? [
               { type: "Notes", id },
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (response: { note: OneNoteResponse }) => response.note,
+      transformResponse: (response: { note: INoteResponse }) => response.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
-    getOneNote: builder.query<OneNoteResponse, string>({
-      query(noteId) {
+    getNote: builder.query<INoteResponse, string>({
+      query(id) {
         return {
-          url: `notes/${noteId}`,
+          url: `/${id}`,
           credentials: "include",
         };
       },
       providesTags: (result, error, id) => [{ type: "Notes", id }],
     }),
-    getAllNotes: builder.query<Note[], { page: number; limit: number }>({
+    getAllNotes: builder.query<INote[], { page: number; limit: number }>({
       query({ page, limit }) {
         return {
-          url: `notes?page=${page}&limit=${limit}`,
+          url: `?page=${page}&limit=${limit}`,
           credentials: "include",
         };
       },
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ noteId: id }) => ({
+              ...result.map(({ id }) => ({
                 type: "Notes" as const,
                 id,
               })),
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (results: { notes: Note[] }) => results.notes,
+      transformResponse: (results: { notes: INote[] }) => results.notes,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
       keepUnusedDataFor: 5,
     }),
-    deleteOneNote: builder.mutation<OneNoteResponse, string>({
-      query(noteId) {
+    deleteNote: builder.mutation<INoteResponse, string>({
+      query(id) {
         return {
-          url: `notes/${noteId}`,
+          url: `/${id}`,
           method: "DELETE",
           credentials: "include",
         };
@@ -98,8 +97,8 @@ export const noteAPI = createApi({
 });
 
 export const {
-  useCreateOneNoteMutation,
-  useDeleteOneNoteMutation,
-  useUpdateOneNoteMutation,
+  useCreateNoteMutation,
+  useDeleteNoteMutation,
+  useUpdateNoteMutation,
   useGetAllNotesQuery,
 } = noteAPI;

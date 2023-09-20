@@ -1,28 +1,27 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import NProgress from "nprogress";
-import React from "react";
+import { FC, useEffect } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
-import Zod from "zod";
-
-import { useCreateOneNoteMutation } from "../../redux/noteAPI";
+import { object, string, TypeOf } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { LoadingButton } from "../LoadingButton";
+import { toast } from "react-toastify";
+import NProgress from "nprogress";
+import { useCreateNoteMutation } from "../../redux/noteAPI";
 
-type CreateNoteProps = {
+type ICreateNoteProps = {
   setOpenNoteModal: (open: boolean) => void;
 };
 
-const createNoteSchema = Zod.object({
-  title: Zod.string().min(1, "Title is required"),
-  content: Zod.string().min(1, "Content is required"),
+const createNoteSchema = object({
+  title: string().min(1, "Title is required"),
+  content: string().min(1, "Content is required"),
 });
 
-export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
+export type CreateNoteInput = TypeOf<typeof createNoteSchema>;
 
-const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
-  const [createOneNote, { isLoading, isError, error, isSuccess }] =
-    useCreateOneNoteMutation();
+const CreateNote: FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
+  const [createNote, { isLoading, isError, error, isSuccess }] =
+    useCreateNoteMutation();
 
   const methods = useForm<CreateNoteInput>({
     resolver: zodResolver(createNoteSchema),
@@ -34,7 +33,7 @@ const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
     formState: { errors },
   } = methods;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSuccess) {
       setOpenNoteModal(false);
       toast.success("Note created successfully");
@@ -59,12 +58,12 @@ const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
         });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const onSubmitHandler: SubmitHandler<CreateNoteInput> = async (data) => {
-    createOneNote(data);
+    createNote(data);
   };
-
   return (
     <section>
       <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">
