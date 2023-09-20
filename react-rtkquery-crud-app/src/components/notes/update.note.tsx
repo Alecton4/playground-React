@@ -64,7 +64,7 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ note, setOpenNoteModal }) => {
   }, [isLoading]);
 
   const onSubmitHandler: SubmitHandler<UpdateNoteInput> = async (data) => {
-    updateNote({ id: note.id, note: data });
+    updateNote({ noteId: note.id, noteUpdate: data });
   };
 
   return (

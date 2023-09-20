@@ -28,20 +28,20 @@ export const noteAPI = createApi({
 
     updateOneNote: builder.mutation<
       NoteResponse,
-      { id: string; note: MutateNote }
+      { noteId: string; noteUpdate: MutateNote }
     >({
-      query({ id, note }) {
+      query({ noteId, noteUpdate }) {
         return {
-          url: `/${id}`,
+          url: `/${noteId}`,
           method: "PATCH",
           credentials: "include",
-          body: note,
+          body: noteUpdate,
         };
       },
-      invalidatesTags: (result, error, { id }) =>
+      invalidatesTags: (result, error, { noteId }) =>
         result
           ? [
-              { type: "Notes", id },
+              { type: "Notes", id: noteId },
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
@@ -52,13 +52,13 @@ export const noteAPI = createApi({
     }),
 
     getOneNote: builder.query<NoteResponse, string>({
-      query(id) {
+      query(noteId) {
         return {
-          url: `/${id}`,
+          url: `/${noteId}`,
           credentials: "include",
         };
       },
-      providesTags: (result, error, id) => [{ type: "Notes", id }],
+      providesTags: (result, error, noteId) => [{ type: "Notes", id: noteId }],
     }),
 
     getAllNotes: builder.query<Note[], { page: number; limit: number }>({
@@ -71,9 +71,9 @@ export const noteAPI = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id: id }) => ({
+              ...result.map(({ id: noteId }) => ({
                 type: "Notes" as const,
-                id,
+                id: noteId,
               })),
               { type: "Notes", id: "LIST" },
             ]
@@ -86,9 +86,9 @@ export const noteAPI = createApi({
     }),
 
     deleteOneNote: builder.mutation<NoteResponse, string>({
-      query(id) {
+      query(noteId) {
         return {
-          url: `/${id}`,
+          url: `/${noteId}`,
           method: "DELETE",
           credentials: "include",
         };
