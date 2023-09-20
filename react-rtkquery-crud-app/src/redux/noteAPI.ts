@@ -68,7 +68,7 @@ export const noteAPI = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({
+              ...result.map(({ noteId: id }) => ({
                 type: "Notes" as const,
                 id,
               })),
