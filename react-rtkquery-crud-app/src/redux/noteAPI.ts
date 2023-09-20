@@ -1,32 +1,34 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IMutateNote, INote, INoteResponse } from "./types";
 import NProgress from "nprogress";
 
-const BASEURL = "http://localhost:8000/api/notes";
+import { MutateNote, Note, NoteResponse } from "./types";
+
+const BASE_URL = "http://localhost:8000/api/notes";
 
 export const noteAPI = createApi({
   reducerPath: "noteAPI",
-  baseQuery: fetchBaseQuery({ baseUrl: BASEURL }),
+  baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ["Notes"],
   endpoints: (builder) => ({
-    createNote: builder.mutation<INoteResponse, IMutateNote>({
+    createOneNote: builder.mutation<NoteResponse, MutateNote>({
       query(note) {
         return {
-          url: "/",
+          url: "",
           method: "POST",
           credentials: "include",
           body: note,
         };
       },
       invalidatesTags: [{ type: "Notes", id: "LIST" }],
-      transformResponse: (result: { note: INoteResponse }) => result.note,
+      transformResponse: (result: { note: NoteResponse }) => result.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
-    updateNote: builder.mutation<
-      INoteResponse,
-      { id: string; note: IMutateNote }
+
+    updateOneNote: builder.mutation<
+      NoteResponse,
+      { id: string; note: MutateNote }
     >({
       query({ id, note }) {
         return {
@@ -43,12 +45,13 @@ export const noteAPI = createApi({
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (response: { note: INoteResponse }) => response.note,
+      transformResponse: (response: { note: NoteResponse }) => response.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
-    getNote: builder.query<INoteResponse, string>({
+
+    getOneNote: builder.query<NoteResponse, string>({
       query(id) {
         return {
           url: `/${id}`,
@@ -57,7 +60,8 @@ export const noteAPI = createApi({
       },
       providesTags: (result, error, id) => [{ type: "Notes", id }],
     }),
-    getAllNotes: builder.query<INote[], { page: number; limit: number }>({
+
+    getAllNotes: builder.query<Note[], { page: number; limit: number }>({
       query({ page, limit }) {
         return {
           url: `?page=${page}&limit=${limit}`,
@@ -67,20 +71,21 @@ export const noteAPI = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({
+              ...result.map(({ id: id }) => ({
                 type: "Notes" as const,
                 id,
               })),
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (results: { notes: INote[] }) => results.notes,
+      transformResponse: (results: { notes: Note[] }) => results.notes,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
       keepUnusedDataFor: 5,
     }),
-    deleteNote: builder.mutation<INoteResponse, string>({
+
+    deleteOneNote: builder.mutation<NoteResponse, string>({
       query(id) {
         return {
           url: `/${id}`,
@@ -97,8 +102,8 @@ export const noteAPI = createApi({
 });
 
 export const {
-  useCreateNoteMutation,
-  useDeleteNoteMutation,
-  useUpdateNoteMutation,
+  useCreateOneNoteMutation,
+  useDeleteOneNoteMutation,
+  useUpdateOneNoteMutation,
   useGetAllNotesQuery,
 } = noteAPI;

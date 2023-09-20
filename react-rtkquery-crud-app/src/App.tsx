@@ -1,16 +1,17 @@
+import NProgress from "nprogress";
+import React from "react";
+import { Provider } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
+
 import NoteModal from "./components/note.modal";
 import CreateNote from "./components/notes/create.note";
 import NoteItem from "./components/notes/note.component";
-import NProgress from "nprogress";
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
 import { useGetAllNotesQuery } from "./redux/noteAPI";
+import { store } from "./redux/store";
 
 function AppContent() {
-  const [openNoteModal, setOpenNoteModal] = useState(false);
+  const [openNoteModal, setOpenNoteModal] = React.useState(false);
 
   const {
     isLoading,
@@ -26,7 +27,7 @@ function AppContent() {
 
   const loading = isLoading || isFetching;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       NProgress.done();
     }
@@ -41,7 +42,6 @@ function AppContent() {
       });
       NProgress.done();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading]);
 
   return (

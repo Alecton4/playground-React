@@ -1,29 +1,30 @@
-import { FC, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingButton } from "../LoadingButton";
-import { toast } from "react-toastify";
 import NProgress from "nprogress";
-import { INote } from "../../redux/types";
-import { useUpdateNoteMutation } from "../../redux/noteAPI";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { twMerge } from "tailwind-merge";
+import Zod from "zod";
+
+import { useUpdateOneNoteMutation } from "../../redux/noteAPI";
+import { Note } from "../../redux/types";
+import { LoadingButton } from "../LoadingButton";
 
 type IUpdateNoteProps = {
-  note: INote;
+  note: Note;
   setOpenNoteModal: (open: boolean) => void;
 };
 
-const updateNoteSchema = object({
-  title: string().min(1, "Title is required"),
-  content: string().min(1, "Content is required"),
+const updateNoteSchema = Zod.object({
+  title: Zod.string().min(1, "Title is required"),
+  content: Zod.string().min(1, "Content is required"),
 });
 
-export type UpdateNoteInput = TypeOf<typeof updateNoteSchema>;
+export type UpdateNoteInput = Zod.TypeOf<typeof updateNoteSchema>;
 
-const UpdateNote: FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
+const UpdateNote: React.FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
   const [updateNote, { isLoading, isError, error, isSuccess }] =
-    useUpdateNoteMutation();
+    useUpdateOneNoteMutation();
 
   const methods = useForm<UpdateNoteInput>({
     resolver: zodResolver(updateNoteSchema),
@@ -35,14 +36,14 @@ const UpdateNote: FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
     formState: { errors },
   } = methods;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (note) {
       methods.reset(note);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       setOpenNoteModal(false);
       toast.success("Note updated successfully");
@@ -65,6 +66,7 @@ const UpdateNote: FC<IUpdateNoteProps> = ({ note, setOpenNoteModal }) => {
   const onSubmitHandler: SubmitHandler<UpdateNoteInput> = async (data) => {
     updateNote({ id: note.id, note: data });
   };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-4">

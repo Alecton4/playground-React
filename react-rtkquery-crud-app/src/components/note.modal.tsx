@@ -1,5 +1,5 @@
 import ReactDom from "react-dom";
-import React, { FC } from "react";
+import React from "react";
 
 type INoteModal = {
   openNoteModal: boolean;
@@ -7,12 +7,13 @@ type INoteModal = {
   children: React.ReactNode;
 };
 
-const NoteModal: FC<INoteModal> = ({
+const NoteModal: React.FC<INoteModal> = ({
   openNoteModal,
   setOpenNoteModal,
   children,
 }) => {
   if (!openNoteModal) return null;
+
   return ReactDom.createPortal(
     <>
       <div

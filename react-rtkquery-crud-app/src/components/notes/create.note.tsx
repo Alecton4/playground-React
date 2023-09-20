@@ -1,27 +1,28 @@
-import { FC, useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { twMerge } from "tailwind-merge";
-import { object, string, TypeOf } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoadingButton } from "../LoadingButton";
-import { toast } from "react-toastify";
 import NProgress from "nprogress";
-import { useCreateNoteMutation } from "../../redux/noteAPI";
+import React from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { twMerge } from "tailwind-merge";
+import Zod from "zod";
+
+import { useCreateOneNoteMutation } from "../../redux/noteAPI";
+import { LoadingButton } from "../LoadingButton";
 
 type ICreateNoteProps = {
   setOpenNoteModal: (open: boolean) => void;
 };
 
-const createNoteSchema = object({
-  title: string().min(1, "Title is required"),
-  content: string().min(1, "Content is required"),
+const createNoteSchema = Zod.object({
+  title: Zod.string().min(1, "Title is required"),
+  content: Zod.string().min(1, "Content is required"),
 });
 
-export type CreateNoteInput = TypeOf<typeof createNoteSchema>;
+export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
 
-const CreateNote: FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
+const CreateNote: React.FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
   const [createNote, { isLoading, isError, error, isSuccess }] =
-    useCreateNoteMutation();
+    useCreateOneNoteMutation();
 
   const methods = useForm<CreateNoteInput>({
     resolver: zodResolver(createNoteSchema),
@@ -33,7 +34,7 @@ const CreateNote: FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
     formState: { errors },
   } = methods;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       setOpenNoteModal(false);
       toast.success("Note created successfully");
@@ -64,6 +65,7 @@ const CreateNote: FC<ICreateNoteProps> = ({ setOpenNoteModal }) => {
   const onSubmitHandler: SubmitHandler<CreateNoteInput> = async (data) => {
     createNote(data);
   };
+
   return (
     <section>
       <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-200">

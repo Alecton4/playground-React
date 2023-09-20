@@ -1,25 +1,26 @@
-import { FC, useEffect, useState } from "react";
 import { format, parseISO } from "date-fns";
+import NProgress from "nprogress";
+import React from "react";
+import { toast } from "react-toastify";
 import { twMerge } from "tailwind-merge";
+
+import { useDeleteOneNoteMutation } from "../../redux/noteAPI";
+import { Note } from "../../redux/types";
 import NoteModal from "../note.modal";
 import UpdateNote from "./update.note";
-import { toast } from "react-toastify";
-import NProgress from "nprogress";
-import { INote } from "../../redux/types";
-import { useDeleteNoteMutation } from "../../redux/noteAPI";
 
 type NoteItemProps = {
-  note: INote;
+  note: Note;
 };
 
-const NoteItem: FC<NoteItemProps> = ({ note }) => {
-  const [openSettings, setOpenSettings] = useState(false);
-  const [openNoteModal, setOpenNoteModal] = useState(false);
+const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
+  const [openSettings, setOpenSettings] = React.useState(false);
+  const [openNoteModal, setOpenNoteModal] = React.useState(false);
 
   const [deleteNote, { isLoading, isError, error, isSuccess }] =
-    useDeleteNoteMutation();
+    useDeleteOneNoteMutation();
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (isSuccess) {
       setOpenNoteModal(false);
       toast.warning("Note deleted successfully");
@@ -39,7 +40,7 @@ const NoteItem: FC<NoteItemProps> = ({ note }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       const dropdown = document.getElementById(`settings-dropdown-${note.id}`);
@@ -61,6 +62,7 @@ const NoteItem: FC<NoteItemProps> = ({ note }) => {
       deleteNote(noteId);
     }
   };
+
   return (
     <>
       <div className="p-4 bg-white rounded-lg border border-gray-200 shadow-md flex flex-col justify-between overflow-hidden">

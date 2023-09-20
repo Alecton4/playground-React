@@ -1,27 +1,27 @@
-export type INote = {
+export type Note = {
   id: string;
   title: string;
   content: string;
   createdAt: Date;
   updatedAt: Date;
 };
-export type IMutateNote = {
+export type MutateNote = {
   title: string;
   content: string;
 };
 
-export type IGenericResponse = {
+export type GenericResponse = {
   status: string;
   message: string;
 };
 
-export type INoteResponse = {
+export type NoteResponse = {
   status: string;
-  note: INote;
+  note: Note;
 };
 
-export type INotesResponse = {
+export type NotesResponse = {
   status: string;
   results: number;
-  notes: INote[];
+  notes: Note[];
 };
