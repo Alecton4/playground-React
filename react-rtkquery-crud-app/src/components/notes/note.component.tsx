@@ -37,7 +37,6 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
       });
       NProgress.done();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   React.useEffect(() => {

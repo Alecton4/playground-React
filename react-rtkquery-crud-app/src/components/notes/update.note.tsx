@@ -40,7 +40,6 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ note, setOpenNoteModal }) => {
     if (note) {
       methods.reset(note);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   React.useEffect(() => {
@@ -60,7 +59,6 @@ const UpdateNote: React.FC<UpdateNoteProps> = ({ note, setOpenNoteModal }) => {
       });
       NProgress.done();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const onSubmitHandler: SubmitHandler<UpdateNoteInput> = async (data) => {

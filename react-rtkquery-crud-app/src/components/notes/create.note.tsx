@@ -59,7 +59,6 @@ const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
         });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading]);
 
   const onSubmitHandler: SubmitHandler<CreateNoteInput> = async (data) => {
