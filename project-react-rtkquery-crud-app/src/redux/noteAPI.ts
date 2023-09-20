@@ -20,7 +20,9 @@ export const noteAPI = createApi({
         };
       },
       invalidatesTags: [{ type: "Notes", id: "LIST" }],
-      transformResponse: (result: { note: SingleNoteResponse }) => result.note,
+      transformResponse(result: { note: SingleNoteResponse }) {
+        return result.note;
+      },
       onQueryStarted(arg, api) {
         NProgress.start();
       },
@@ -45,8 +47,9 @@ export const noteAPI = createApi({
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (response: { note: SingleNoteResponse }) =>
-        response.note,
+      transformResponse(response: { note: SingleNoteResponse }) {
+        return response.note;
+      },
       onQueryStarted(arg, api) {
         NProgress.start();
       },
@@ -79,7 +82,9 @@ export const noteAPI = createApi({
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (results: { notes: Note[] }) => results.notes,
+      transformResponse(results: { notes: Note[] }) {
+        return results.notes;
+      },
       onQueryStarted(arg, api) {
         NProgress.start();
       },
