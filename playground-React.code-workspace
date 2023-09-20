@@ -3,15 +3,6 @@
 		{
 			"name": "playground-React",
 			"path": "."
-		},
-		{
-			"path": "MDN-HTML-guide"
-		},
-		{
-			"path": "MDN-JS-guide"
-		},
-		{
-			"path": "React-quick-start"
 		}
 	],
 	"settings": {
