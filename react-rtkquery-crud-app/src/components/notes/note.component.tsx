@@ -17,7 +17,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
   const [openNoteModal, setOpenNoteModal] = React.useState(false);
 
-  const [deleteOneNote, { isLoading, isError, error, isSuccess }] =
+  const [deleteNote, { isLoading, isError, error, isSuccess }] =
     useDeleteOneNoteMutation();
 
   React.useEffect(() => {
@@ -42,9 +42,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
   React.useEffect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      const dropdown = document.getElementById(
-        `settings-dropdown-${note.noteId}`
-      );
+      const dropdown = document.getElementById(`settings-dropdown-${note.id}`);
 
       if (dropdown && !dropdown.contains(target)) {
         setOpenSettings(false);
@@ -56,11 +54,11 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
     };
-  }, [note.noteId]);
+  }, [note.id]);
 
   const onDeleteHandler = (noteId: string) => {
     if (window.confirm("Are you sure")) {
-      deleteOneNote(noteId);
+      deleteNote(noteId);
     }
   };
 
@@ -90,7 +88,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
             <i className="bx bx-dots-horizontal-rounded"></i>
           </div>
           <div
-            id={`settings-dropdown-${note.noteId}`}
+            id={`settings-dropdown-${note.id}`}
             className={twMerge(
               `absolute right-0 bottom-3 z-10 w-28 text-base list-none bg-white rounded divide-y divide-gray-100 shadow`,
               `${openSettings ? "block" : "hidden"}`
@@ -109,7 +107,7 @@ const NoteItem: React.FC<NoteItemProps> = ({ note }) => {
               <li
                 onClick={() => {
                   setOpenSettings(false);
-                  onDeleteHandler(note.noteId);
+                  onDeleteHandler(note.id);
                 }}
                 className="py-2 px-4 text-sm text-red-600 hover:bg-gray-100 cursor-pointer"
               >

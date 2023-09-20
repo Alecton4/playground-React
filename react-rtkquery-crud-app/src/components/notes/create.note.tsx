@@ -21,7 +21,7 @@ const createNoteSchema = Zod.object({
 export type CreateNoteInput = Zod.TypeOf<typeof createNoteSchema>;
 
 const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
-  const [createOneNote, { isLoading, isError, error, isSuccess }] =
+  const [createNote, { isLoading, isError, error, isSuccess }] =
     useCreateOneNoteMutation();
 
   const methods = useForm<CreateNoteInput>({
@@ -62,7 +62,7 @@ const CreateNote: React.FC<CreateNoteProps> = ({ setOpenNoteModal }) => {
   }, [isLoading]);
 
   const onSubmitHandler: SubmitHandler<CreateNoteInput> = async (data) => {
-    createOneNote(data);
+    createNote(data);
   };
 
   return (

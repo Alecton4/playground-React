@@ -1,11 +1,11 @@
+// !!! The field names here must be the same as in the backend.
 export type Note = {
-  noteId: string;
+  id: string;
   title: string;
   content: string;
   createdAt: Date;
   updatedAt: Date;
 };
-
 export type MutateNote = {
   title: string;
   content: string;
@@ -16,12 +16,12 @@ export type GenericResponse = {
   message: string;
 };
 
-export type OneNoteResponse = {
+export type SingleNoteResponse = {
   status: string;
   note: Note;
 };
 
-export type SomeNotesResponse = {
+export type NotesResponse = {
   status: string;
   results: number;
   notes: Note[];

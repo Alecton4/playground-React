@@ -64,7 +64,7 @@ function AppContent() {
         {/* Note Items */}
 
         {notes?.map((note) => (
-          <NoteItem key={note.noteId} note={note} />
+          <NoteItem key={note.id} note={note} />
         ))}
 
         {/* Create Note Modal */}
