@@ -1,3 +1,4 @@
+// !!! The field names here must be the same as in the backend.
 export type Note = {
   id: string;
   title: string;
