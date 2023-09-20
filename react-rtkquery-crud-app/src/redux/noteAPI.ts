@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import NProgress from "nprogress";
 
-import { MutateNote, Note, NoteResponse } from "./types";
+import { MutateNote, Note, SingleNoteResponse } from "./types";
 
 const BASE_URL = "http://localhost:8000/api/notes";
 
@@ -10,7 +10,7 @@ export const noteAPI = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: BASE_URL }),
   tagTypes: ["Notes"],
   endpoints: (builder) => ({
-    createOneNote: builder.mutation<NoteResponse, MutateNote>({
+    createOneNote: builder.mutation<SingleNoteResponse, MutateNote>({
       query(note) {
         return {
           url: "",
@@ -20,14 +20,14 @@ export const noteAPI = createApi({
         };
       },
       invalidatesTags: [{ type: "Notes", id: "LIST" }],
-      transformResponse: (result: { note: NoteResponse }) => result.note,
+      transformResponse: (result: { note: SingleNoteResponse }) => result.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
 
     updateOneNote: builder.mutation<
-      NoteResponse,
+      SingleNoteResponse,
       { noteId: string; noteUpdate: MutateNote }
     >({
       query({ noteId, noteUpdate }) {
@@ -45,13 +45,14 @@ export const noteAPI = createApi({
               { type: "Notes", id: "LIST" },
             ]
           : [{ type: "Notes", id: "LIST" }],
-      transformResponse: (response: { note: NoteResponse }) => response.note,
+      transformResponse: (response: { note: SingleNoteResponse }) =>
+        response.note,
       onQueryStarted(arg, api) {
         NProgress.start();
       },
     }),
 
-    getOneNote: builder.query<NoteResponse, string>({
+    getOneNote: builder.query<SingleNoteResponse, string>({
       query(noteId) {
         return {
           url: `/${noteId}`,
@@ -85,7 +86,7 @@ export const noteAPI = createApi({
       keepUnusedDataFor: 5,
     }),
 
-    deleteOneNote: builder.mutation<NoteResponse, string>({
+    deleteOneNote: builder.mutation<SingleNoteResponse, string>({
       query(noteId) {
         return {
           url: `/${noteId}`,

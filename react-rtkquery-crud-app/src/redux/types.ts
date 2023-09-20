@@ -16,7 +16,7 @@ export type GenericResponse = {
   message: string;
 };
 
-export type NoteResponse = {
+export type SingleNoteResponse = {
   status: string;
   note: Note;
 };
