@@ -1,35 +1,93 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import NProgress from "nprogress";
+import React from "react";
+import { Provider } from "react-redux";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+import NoteModal from "./components/note.modal";
+import CreateNote from "./components/notes/create.note";
+import NoteItem from "./components/notes/note.component";
+import { useGetAllNotesQuery } from "./redux/noteAPI";
+import { store } from "./redux/store";
+
+function AppContent() {
+  const [openNoteModal, setOpenNoteModal] = React.useState(false);
+
+  const {
+    isLoading,
+    isFetching,
+    isError,
+    isSuccess,
+    error,
+    data: notes,
+  } = useGetAllNotesQuery(
+    { page: 1, limit: 10 },
+    { refetchOnFocus: true, refetchOnReconnect: true }
+  );
+
+  const loading = isLoading || isFetching;
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      NProgress.done();
+    }
+
+    if (isError) {
+      setOpenNoteModal(false);
+      const err = error as any;
+      const resMessage =
+        err.data.message || err.data.detail || err.message || err.toString();
+      toast.error(resMessage, {
+        position: "top-right",
+      });
+      NProgress.done();
+    }
+  }, [loading]);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="2xl:max-w-[90rem] max-w-[68rem] mx-auto">
+      <div className="m-8 grid grid-cols-[repeat(auto-fill,_320px)] gap-7 grid-rows-[1fr]">
+        <div className="p-4 min-h-[18rem] bg-white rounded-lg border border-gray-200 shadow-md flex flex-col items-center justify-center">
+          <div
+            onClick={() => setOpenNoteModal(true)}
+            className="flex items-center justify-center h-20 w-20 border-2 border-dashed border-ct-blue-600 rounded-full text-ct-blue-600 text-5xl cursor-pointer"
+          >
+            <i className="bx bx-plus"></i>
+          </div>
+          <h4
+            onClick={() => setOpenNoteModal(true)}
+            className="text-lg font-medium text-ct-blue-600 mt-5 cursor-pointer"
+          >
+            Add new note
+          </h4>
+        </div>
+        {/* Note Items */}
+
+        {notes?.map((note) => (
+          <NoteItem key={note.noteId} note={note} />
+        ))}
+
+        {/* Create Note Modal */}
+        <NoteModal
+          openNoteModal={openNoteModal}
+          setOpenNoteModal={setOpenNoteModal}
+        >
+          <CreateNote setOpenNoteModal={setOpenNoteModal} />
+        </NoteModal>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+function App() {
+  return (
+    <>
+      <Provider store={store}>
+        <AppContent />
+        <ToastContainer />
+      </Provider>
+    </>
+  );
+}
+
+export default App;
