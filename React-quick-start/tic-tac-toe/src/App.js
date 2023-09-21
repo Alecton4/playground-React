@@ -9,13 +9,7 @@ function Square({ value, onSquareClick }) {
   );
 }
 
-let renderCount = 0;
-
 export default function Board() {
-  renderCount += 1;
-  console.log(renderCount);
-
-  // ??? Why will the states not be re-initialized when re-rendering?
   const [xIsNext, setXIsNext] = useState(true);
   const [squares, setSquares] = useState(Array(9).fill(null));
 
